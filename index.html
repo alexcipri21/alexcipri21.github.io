@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>alexcipri21</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icon.png">
+
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Code Highlight Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
     <div class="layout-wrapper">
@@ -16,24 +23,68 @@
                 <p class="profile-bio">Computer Engineering Student @ UTCN</p>
 
                 <a href="CV_Cimpan_Alex_Ciprian.pdf" target="_blank" class="cv-button">
-            Download CV (PDF)
-            </a>
-            </div>
+                    Download CV (PDF)
+                </a>
 
-            
+                <!-- Social Links -->
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/alexcipri21/" target="_blank" title="LinkedIn">LinkedIn</a>
+                    <a href="https://github.com/alexcipri21" target="_blank" title="GitHub">GitHub</a>
+                </div>
+
+            </div>
         </aside>
 
+        
+
         <main class="content">
-            <h2>Notes</h2>
+            <!-- Search Bar Section -->
+            <div class="search-container">
+                <input type="text" id="blogSearch" placeholder="Search posts..." class="search-input">
+            </div>
+
+            <h2>Posts</h2>
             
-            <div class="posts-list">
-                <div class="post-card">
-                    <span class="date">19 Iulie 2026</span>
-                    <a href="articole/primul-articol.html">test</a>
+            <!-- NumPy Post Card -->
+            <div class="post-card">
+                <div class="post-header">
+                    <span class="date">19 Jul 2026</span>
+                    <div class="post-tags">
+                        <span class="tag python">Python</span>
+                        <span class="tag math">NumPy</span>
+                    </div>
                 </div>
+                <a href="articole/numpy.html" class="post-title">NumPy Basics</a>
+                <p class="post-excerpt">Essential array creation, shape manipulation, and core aggregation methods for data science.</p>
             </div>
         </main>
 
     </div>
+
+    <!-- Code Highlight Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+
+    <!-- Local Search Script -->
+    <script>
+        document.getElementById('blogSearch').addEventListener('keyup', function() {
+            let searchQuery = this.value.toLowerCase();
+            let postCards = document.querySelectorAll('.post-card');
+            
+            postCards.forEach(function(card) {
+                let cardText = card.innerText.toLowerCase();
+                
+                if (cardText.includes(searchQuery)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
