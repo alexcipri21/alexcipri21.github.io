@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Patterns</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../icon.png">
+    
+    <!-- Code Highlight Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <style>
+        .method-section {
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .method-section h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--accent);
+            padding-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="layout-wrapper" style="grid-template-columns: 1fr; max-width: 680px; margin: 0 auto;">
+        
+        <header style="margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+            <a href="../index.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">← Main page</a>
+            <h1 style="margin-top: 1rem; color: #ffffff; font-size: 2rem;">Design Patterns</h1>
+            <span class="date" style="color: var(--text-muted); font-size: 0.9rem;">19 Jul 2026</span>
+        </header>
+
+        <main class="article-body">
+
+            <!-- 1. Creational Patterns -->
+            <div class="method-section">
+                <h3>1. Creational Patterns (Object Creation)</h3>
+                <pre><code class="language-java">// SINGLETON
+// Ensures a class has only one instance and provides a global access point
+public class DatabaseConnection {
+    private static DatabaseConnection instance;
+
+    private DatabaseConnection() {} // Private constructor prevents instantiation
+
+    public static synchronized DatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
+    }
+}
+
+// FACTORY METHOD
+// Defines an interface for creating an object, letting subclasses decide the class
+interface Button { void render(); }
+class WindowsButton implements Button { public void render() { /* ... */ } }
+
+abstract class Dialog {
+    abstract Button createButton(); // Factory Method
+    public void renderWindow() {
+        Button okButton = createButton();
+        okButton.render();
+    }
+}</code></pre>
+            </div>
+
+            <!-- 2. Structural Patterns -->
+            <div class="method-section">
+                <h3>2. Structural Patterns (Relationships Between Entities)</h3>
+                <pre><code class="language-java">// ADAPTER
+// Allows incompatible interfaces to collaborate
+interface TypeC { void chargeWithTypeC(); }
+interface MicroUSB { void chargeWithMicroUSB(); }
+
+class MicroToTypeCAdapter implements TypeC {
+    private MicroUSB microUsbDevice;
+
+    public MicroToTypeCAdapter(MicroUSB device) { this.microUsbDevice = device; }
+    
+    @Override
+    public void chargeWithTypeC() {
+        microUsbDevice.chargeWithMicroUSB(); // Converts interface call
+    }
+}
+
+// DECORATOR
+// Dynamically attaches new responsibilities to an object without altering its structure
+interface Coffee { double getCost(); }
+class SimpleCoffee implements Coffee { public double getCost() { return 5.0; } }
+
+class MilkDecorator implements Coffee {
+    private Coffee coffee;
+    public MilkDecorator(Coffee coffee) { this.coffee = coffee; }
+    public double getCost() { return coffee.getCost() + 1.5; }
+}</code></pre>
+            </div>
+
+            <!-- 3. Behavioral Patterns -->
+            <div class="method-section">
+                <h3>3. Behavioral Patterns (Communication Between Objects)</h3>
+                <pre><code class="language-java">// STRATEGY
+// Defines a family of algorithms, encapsulates each one, and makes them interchangeable
+interface PaymentStrategy { void pay(int amount); }
+class CreditCardPayment implements PaymentStrategy { public void pay(int amount) { /* ... */ } }
+class PaypalPayment implements PaymentStrategy { public void pay(int amount) { /* ... */ } }
+
+class ShoppingCart {
+    private PaymentStrategy paymentMethod;
+    public void setPaymentMethod(PaymentStrategy strategy) { this.paymentMethod = strategy; }
+    public void checkout(int amount) { paymentMethod.pay(amount); }
+}
+
+// OBSERVER
+// Subscription mechanism to notify multiple objects about any events
+interface Observer { void update(String msg); }
+class User implements Observer { public void update(String msg) { /* Notify user */ } }
+
+class Newsletter {
+    private List&lt;Observer&gt; subscribers = new ArrayList&lt;&gt;();
+    public void subscribe(Observer o) { subscribers.add(o); }
+    public void notifySubscribers() {
+        for(Observer o : subscribers) o.update("New Article!");
+    }
+}</code></pre>
+            </div>
+
+            <div class="resources-box">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://refactoring.guru/design-patterns" target="_blank">Refactoring.Guru: Design Patterns Guide</a></li>
+                    <li><a href="https://www.geeksforgeeks.org/software-design-patterns/" target="_blank">GeeksforGeeks: Software Design Patterns</a></li>
+                    <li><a href="https://www.se.rit.edu/~swen-383/resources/RefCardz/designpatterns.pdf" target="_blank">RefCardz: Design Patterns</a></li>
+                </ul>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Code Highlight Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+</body>
+</html>
