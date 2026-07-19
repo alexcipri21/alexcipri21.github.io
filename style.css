@@ -5,8 +5,8 @@
 }
 
 :root {
-    --bg-main: #0b0f19;
-    --bg-card: #151d30;
+    --bg-main: #0E0F19;
+    --bg-card: #57886C;
     --text-main: #e2e8f0;
     --text-muted: #94a3b8;
     --accent: #38bdf8;
@@ -17,44 +17,83 @@
 body {
     background-color: var(--bg-main);
     color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.7;
-    padding: 3rem 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.6;
+    padding: 4rem 2rem;
 }
 
-.container {
-    max-width: 680px;
+.layout-wrapper {
+    max-width: 960px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 4rem;
 }
 
-header {
-    margin-bottom: 4rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--border-color);
+.sidebar {
+    position: sticky;
+    top: 4rem; 
+    height: fit-content;
 }
 
-header h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.profile-name {
     color: #ffffff;
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
     letter-spacing: -0.025em;
-    margin-bottom: 0.5rem;
 }
 
-header p {
+.profile-bio {
     color: var(--text-muted);
-    font-size: 1.15rem;
+    font-size: 0.95rem;
+}
+
+.cv-button {
+    display: inline-block;
+    margin-top: 1.5rem;
+    background-color: transparent;
+    color: var(--accent) !important;
+    border: 1px solid var(--accent);
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.cv-button:hover {
+    background-color: var(--accent);
+    color: var(--bg-main) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--text-muted);
     margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-size: 1.1rem;
-    color: var(--text-muted);
 }
 
 .posts-list {
@@ -82,7 +121,6 @@ h2 {
 .post-card .date {
     color: var(--text-muted);
     font-size: 0.85rem;
-    font-weight: 500;
 }
 
 .post-card a {
@@ -90,9 +128,28 @@ h2 {
     font-size: 1.2rem;
     font-weight: 600;
     text-decoration: none;
-    transition: color 0.2s;
 }
 
 .post-card a:hover {
     color: var(--accent);
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 2rem 1rem;
+    }
+    .layout-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+    .sidebar {
+        position: relative;
+        top: 0;
+    }
+    .profile-card {
+        align-items: center;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 2rem;
+    }
 }
