@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Status Codes Cheat Sheet</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../icon.png">
+    
+    <!-- Code Highlight Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <style>
+        .method-section {
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .method-section h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--accent);
+            padding-left: 0.5rem;
+        }
+        
+        .status-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        .status-table th, .status-table td {
+            padding: 0.7rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .status-table th {
+            color: var(--accent);
+            border-bottom: 2px solid var(--border-color);
+        }
+        .code-badge {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+            min-width: 45px;
+            text-align: center;
+        }
+        .badge-1xx { background-color: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
+        .badge-2xx { background-color: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .badge-3xx { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .badge-4xx { background-color: rgba(239, 68, 68, 0.15); color: #f87171; }
+        .badge-5xx { background-color: rgba(249, 115, 22, 0.15); color: #fb923c; }
+
+        .status-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .status-list li {
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="layout-wrapper" style="grid-template-columns: 1fr; max-width: 680px; margin: 0 auto;">
+        
+        <header style="margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+            <a href="../index.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">← Main page</a>
+            <h1 style="margin-top: 0.5rem; color: #ffffff; font-size: 2rem;">HTTP API Status Codes</h1>
+            <span class="date" style="color: var(--text-muted); font-size: 0.9rem;">20 Jul 2026</span>
+        </header>
+
+        <main class="article-body">
+
+            <!-- Key Difference: 401 vs 403 -->
+            <div class="method-section">
+                <h3>1. Key Distinction: 401 vs 403</h3>
+                <table class="status-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Status</th>
+                            <th>Core Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="code-badge badge-4xx">401</span></td>
+                            <td><strong>Unauthorized</strong></td>
+                            <td><em>Authentication missing/failed.</em> The server doesn't know who you are (missing/expired JWT token).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="code-badge badge-4xx">403</span></td>
+                            <td><strong>Forbidden</strong></td>
+                            <td><em>Authorization failed.</em> The server knows who you are, but you lack permissions (e.g. USER role accessing ADMIN endpoint).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 2xx Success -->
+            <div class="method-section">
+                <h3>2. 2xx Success (Request Succeeded)</h3>
+                <ul class="status-list">
+                    <li><span class="code-badge badge-2xx">200</span> <strong>OK</strong> – Standard response for successful HTTP requests (GET, PUT, PATCH).</li>
+                    <li><span class="code-badge badge-2xx">201</span> <strong>Created</strong> – Resource successfully created (common response for POST requests). Includes <code>Location</code> header.</li>
+                    <li><span class="code-badge badge-2xx">202</span> <strong>Accepted</strong> – Request accepted for processing, but processing is not complete (async jobs).</li>
+                    <li><span class="code-badge badge-2xx">204</span> <strong>No Content</strong> – Request processed successfully, but returns no body payload (common for DELETE requests).</li>
+                </ul>
+            </div>
+
+            <!-- 3xx Redirection -->
+            <div class="method-section">
+                <h3>3. 3xx Redirection (Resource Moved)</h3>
+                <ul class="status-list">
+                    <li><span class="code-badge badge-3xx">301</span> <strong>Moved Permanently</strong> – The requested resource URL has permanently changed.</li>
+                    <li><span class="code-badge badge-3xx">302</span> <strong>Found (Temporary Redirect)</strong> – Temporary URL change.</li>
+                    <li><span class="code-badge badge-3xx">304</span> <strong>Not Modified</strong> – Used for client-side caching. Indicates payload has not changed since last request.</li>
+                </ul>
+            </div>
+
+            <!-- 4xx Client Errors -->
+            <div class="method-section">
+                <h3>4. 4xx Client Errors (Bad Client Input)</h3>
+                <ul class="status-list">
+                    <li><span class="code-badge badge-4xx">400</span> <strong>Bad Request</strong> – Malformed request syntax, invalid JSON, or missing required body parameters.</li>
+                    <li><span class="code-badge badge-4xx">401</span> <strong>Unauthorized</strong> – Missing authentication or invalid credentials.</li>
+                    <li><span class="code-badge badge-4xx">403</span> <strong>Forbidden</strong> – Client authenticated, but lacks access rights/roles.</li>
+                    <li><span class="code-badge badge-4xx">404</span> <strong>Not Found</strong> – The endpoint or requested entity ID does not exist.</li>
+                    <li><span class="code-badge badge-4xx">405</span> <strong>Method Not Allowed</strong> – Endpoint exists, but HTTP method (e.g., POST) is disabled.</li>
+                    <li><span class="code-badge badge-4xx">409</span> <strong>Conflict</strong> – Conflict with current state of server (e.g., registering duplicate email).</li>
+                    <li><span class="code-badge badge-4xx">415</span> <strong>Unsupported Media Type</strong> – Missing or wrong <code>Content-Type</code> header.</li>
+                    <li><span class="code-badge badge-4xx">422</span> <strong>Unprocessable Entity</strong> – Syntax is correct, but payload fails validation rules (e.g. negative price).</li>
+                    <li><span class="code-badge badge-4xx">429</span> <strong>Too Many Requests</strong> – Rate limiting triggered (too many calls in a short window).</li>
+                </ul>
+            </div>
+
+            <!-- 5xx Server Errors -->
+            <div class="method-section">
+                <h3>5. 5xx Server Errors (Server-Side Failures)</h3>
+                <ul class="status-list">
+                    <li><span class="code-badge badge-5xx">500</span> <strong>Internal Server Error</strong> – Generic uncaught exception / crash in backend code.</li>
+                    <li><span class="code-badge badge-5xx">501</span> <strong>Not Implemented</strong> – Server does not support the functionality required.</li>
+                    <li><span class="code-badge badge-5xx">502</span> <strong>Bad Gateway</strong> – Reverse proxy (Nginx/API Gateway) received an invalid response from upstream server.</li>
+                    <li><span class="code-badge badge-5xx">503</span> <strong>Service Unavailable</strong> – Server is overloaded or down for maintenance.</li>
+                    <li><span class="code-badge badge-5xx">504</span> <strong>Gateway Timeout</strong> – Reverse proxy timed out waiting for upstream server to respond.</li>
+                </ul>
+            </div>
+
+            <!-- 1xx Informational -->
+            <div class="method-section">
+                <h3>6. 1xx Informational (Protocol Level)</h3>
+                <ul class="status-list">
+                    <li><span class="code-badge badge-1xx">100</span> <strong>Continue</strong> – Server received initial request headers; client should proceed to send payload body.</li>
+                    <li><span class="code-badge badge-1xx">101</span> <strong>Switching Protocols</strong> – Used when upgrading connection from HTTP to WebSockets.</li>
+                </ul>
+            </div>
+
+            <div class="resources-box">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">MDN Web Docs: HTTP Response Status Codes</a></li>
+                    <li><a href="https://httpstatuses.com/" target="_blank">HTTP Status Codes Reference</a></li>
+                </ul>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Code Highlight Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</body>
+</html>

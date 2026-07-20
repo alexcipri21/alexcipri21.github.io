@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing Basics</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../icon.png">
+    
+    <!-- Code Highlight Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <style>
+        .method-section {
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .method-section h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--accent);
+            padding-left: 0.5rem;
+        }
+        
+        /* Inline Pyramida Vizuală */
+        .pyramid-container {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .pyramid-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Acronime listate curat */
+        .acronym-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        .acronym-list li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .acronym-list strong {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="layout-wrapper" style="grid-template-columns: 1fr; max-width: 680px; margin: 0 auto;">
+        
+        <header style="margin-bottom: 0 rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+            <a href="../index.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">← Main page</a>
+            <h1 style="margin-top: 1rem; color: #ffffff; font-size: 2rem;">Software Testing</h1>
+            <span class="date" style="color: var(--text-muted); font-size: 0.9rem;">20 Jul 2026</span>
+        </header>
+
+        <main class="article-body">
+
+            <!-- 1. Test Pyramid & Types -->
+            <div class="method-section">
+                <h3>1. The Test Pyramid & Testing Types</h3>
+                
+                <div class="pyramid-container">
+                    <img src="../images/test-pyramid.png" alt="The Test Pyramid" class="pyramid-img" onerror="this.style.display='none'">
+                </div>
+
+                <ul class="acronym-list">
+                    <li><strong>E2E Testing:</strong> Tests the entire system flow from the user interface down to the DB. Slowest, most expensive, and most fragile.</li>
+                    <li><strong>Integration Testing:</strong> Verifies interaction between integrated modules/components (e.g., Database, External APIs). Moderate speed and complexity.</li>
+                    <li><strong>Unit Testing:</strong> Tests individual functions, methods, or classes in isolation. Fast, cheap, highly reliable, and form the foundation (majority) of tests.</li>
+                </ul>
+            </div>
+
+            <!-- 2. TDD & Principles -->
+            <div class="method-section">
+                <h3>2. Principles</h3>
+                
+                <p><strong>Test-Driven Development (TDD):</strong></p>
+                <ul class="acronym-list">
+                    <li>🔴 <strong>Red:</strong> Write a failing unit test before writing any code.</li>
+                    <li>🟢 <strong>Green:</strong> Write the minimum code required to pass the test.</li>
+                    <li>🔵 <strong>Refactor:</strong> Clean up and optimize code while keeping tests green.</li>
+                </ul>
+
+                <p><strong>FIRST Principles:</strong></p>
+                <ul class="acronym-list">
+                    <li><strong>F - Fast:</strong> Unit tests should run instantly (milliseconds).</li>
+                    <li><strong>I - Independent:</strong> Tests must not depend on each other or run in a specific order.</li>
+                    <li><strong>R - Repeatable:</strong> Produces the exact same result in any environment.</li>
+                    <li><strong>S - Self-Validating:</strong> Pass or fail automatically without manual inspection.</li>
+                    <li><strong>T - Timely:</strong> Written just before or alongside the production code.</li>
+                </ul>
+            </div>
+
+            <!-- 3. AAA Pattern -->
+            <div class="method-section">
+                <h3>3. AAA Pattern (Arrange-Act-Assert)</h3>
+                <p>A standard structure for organizing unit tests for maximum readability:</p>
+                
+                <pre><code class="language-java">@Test
+void shouldCalculateTotalPriceWithTax() {
+    // 1. ARRANGE - Setup test data and dependencies
+    Calculator calc = new Calculator();
+    double price = 100.0;
+
+    // 2. ACT - Execute the method under test
+    double total = calc.addTax(price);
+
+    // 3. ASSERT - Verify the result
+    assertEquals(119.0, total);
+}</code></pre>
+            </div>
+
+            <!-- 4. Basic JUnit 5 Annotations -->
+            <div class="method-section">
+                <h3>4. Basic JUnit 5 Annotations</h3>
+                <pre><code class="language-java">class OrderServiceTest {
+
+    @BeforeAll
+    static void initAll() {
+        // Runs ONCE before all tests in class (setup test DB connection)
+    }
+
+    @BeforeEach
+    void init() {
+        // Runs BEFORE EACH @Test method (re-initialize fresh objects)
+    }
+
+    @Test
+    void testOrderCreation() {
+        // Defines a test method
+    }
+
+    @Test
+    @Disabled("Pending bug fix #102")
+    void testLegacyFeature() {
+        // Skips test execution
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Runs AFTER EACH @Test method (clear memory/state)
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        // Runs ONCE after all tests execution finishes
+    }
+}</code></pre>
+            </div>
+
+            <!-- 5. REST Assured (API Testing) -->
+            <div class="method-section">
+                <h3>5. REST Assured (API Testing)</h3>
+                <p>Java library for testing RESTful web services using a Given-When-Then (BDD) syntax:</p>
+                
+                <pre><code class="language-java">import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+import org.junit.jupiter.api.Test;
+
+class UserApiTest {
+
+    @Test
+    void shouldFetchUserSuccessfully() {
+        given()
+            .baseUri("https://api.example.com")
+            .header("Content-Type", "application/json")
+            .queryParam("status", "active")
+        .when()
+            .get("/users/1")
+        .then()
+            .statusCode(200)
+            .body("id", equalTo(1))
+            .body("name", equalTo("Alex"))
+            .body("roles", hasItem("ADMIN"));
+    }
+}</code></pre>
+            </div>
+
+            <div class="resources-box">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://martinfowler.com/articles/practical-test-pyramid.html" target="_blank">Martin Fowler: The Practical Test Pyramid</a></li>
+                    <li><a href="https://junit.org/junit5/docs/current/user-guide/" target="_blank">JUnit 5 Official User Guide</a></li>
+                    <li><a href="https://automationpanda.com/2025/09/29/the-testing-skyscraper-a-modern-alternative-to-the-testing-pyramid/" target="_blank">The Testing Skyscraper: A Modern Alternative to the Testing Pyramid</a></li>
+                    
+                </ul>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Code Highlight Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+</body>
+</html>
