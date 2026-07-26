@@ -24,6 +24,31 @@
             border-left: 3px solid var(--accent);
             padding-left: 0.5rem;
         }
+        .pattern-notes {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        .pattern-notes h4 {
+            color: #ffffff;
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+        }
+        .pattern-notes ul {
+            padding-left: 1.2rem;
+            margin-top: 0.4rem;
+            color: var(--text-main);
+        }
+        .pattern-notes li {
+            margin-bottom: 0.3rem;
+        }
+        .pattern-notes strong {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -56,17 +81,44 @@ public class DatabaseConnection {
 }
 
 // FACTORY METHOD
-// Defines an interface for creating an object, letting subclasses decide the class
-interface Button { void render(); }
-class WindowsButton implements Button { public void render() { /* ... */ } }
+// Defines an interface for creating an object, but lets the factory decide which class to instantiate.
 
-abstract class Dialog {
-    abstract Button createButton(); // Factory Method
-    public void renderWindow() {
-        Button okButton = createButton();
-        okButton.render();
+interface Notification { void send(String msg); }
+class EmailNotification implements Notification { public void send(String msg) { /* ... */ } }
+class SMSNotification implements Notification { public void send(String msg) { /* ... */ } }
+
+class NotificationFactory {
+    public static Notification createNotification(String type) {
+        if ("EMAIL".equalsIgnoreCase(type)) return new EmailNotification();
+        if ("SMS".equalsIgnoreCase(type)) return new SMSNotification();
+        throw new IllegalArgumentException("Unknown type: " + type);
     }
+}
 }</code></pre>
+
+                <!-- Explicatii Creational -->
+                <div class="pattern-notes">
+                    <h4>📌 Singleton</h4>
+                    <ul>
+                        <li><strong>Ce face:</strong> Garanteaza ca exista <em>o singura instanta</em> a unei clase in intreaga aplicatie si ofera un punct global de acces la ea.</li>
+                        <li><strong>Unde se folosește:</strong> Conexiuni la baze de date, app config, servicii de logging.</li>
+                        <li><strong>Cheie:</strong> Constructor private (sa nu poata fi apelat din exterior) + metoda static pentru instantiere.</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem;">📌 Factory Method</h4>
+                    <ul>
+                        <li><strong>Ce face:</strong> Deleaga crearea obiectelor catre o metoda dedicata, decupland codul principal de clasele concrete.</li>
+                        <li><strong>Unde se folosește:</strong>
+                        <ul>
+                            <li>Cand o clasa nu poate anticipa tipul exact de obiecte pe care trebuie sa le creeze la runtime.</li>
+                            <li>Cand vrei ca subclasele sau fabrica sa specifice logica de creare.</li>
+                            <li>Cand vrei sa ascunzi un proces complex de inițializare.</li>
+                            <li>Cand vrei sa adaugi tipuri noi de obiecte mai tarziu fara sa modifici codul existent.</li>
+                        </ul>
+                        </li>
+                        <li><strong>Cheie:</strong> Nu folosesti operatorul new direct in codul principal pentru a crea un obiect, ci apelezi o metoda care creeaza si returneaza obiectul.</li>
+                    </ul>
+                </div>
             </div>
 
             <!-- 2. Structural Patterns -->
@@ -98,6 +150,23 @@ class MilkDecorator implements Coffee {
     public MilkDecorator(Coffee coffee) { this.coffee = coffee; }
     public double getCost() { return coffee.getCost() + 1.5; }
 }</code></pre>
+
+                <!-- Explicatii Structural -->
+                <div class="pattern-notes">
+                    <h4>📌 Adapter</h4>
+                    <ul>
+                        <li><strong>Ce face:</strong> Traduce interfata unei clase intr-o alta interfata pe care o asteapta clientul (ex. un adaptor fizic de priza sau cablu).</li>
+                        <li><strong>Unde se folosește:</strong> Când vrei să integrezi librarii third-party sau cod legacy fara sa modifici interfetele lor existente.</li>
+                        <li><strong>Cheie:</strong> Clasa adaptor impacheteaza obiectul incompatibil si apeleaza intern metodele acestuia.</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem;">📌 Decorator</h4>
+                    <ul>
+                        <li><strong>Ce face:</strong> Adaugă funcționalități noi unui obiect în mod dinamic, la runtime, fără a modifica clasa originală sau a folosi moștenire excesivă.</li>
+                        <li><strong>Unde se folosește:</strong> I/O Streams din Java (<code>BufferedReader(new FileReader(...))</code>), sisteme de opțiuni/extra-costuri (ex: cafea + lapte + sirop).</li>
+                        <li><strong>Cheie:</strong> Decoratorul implementează aceeași interfață ca obiectul decorat și păstrează o referință către acesta.</li>
+                    </ul>
+                </div>
             </div>
 
             <!-- 3. Behavioral Patterns -->
@@ -127,6 +196,23 @@ class Newsletter {
         for(Observer o : subscribers) o.update("New Article!");
     }
 }</code></pre>
+
+                <!-- Explicatii Behavioral -->
+                <div class="pattern-notes">
+                    <h4>📌 Strategy</h4>
+                    <ul>
+                        <li><strong>Ce face:</strong> Defineste o familie de algoritmi, ii izoleaza în clase separate si ii face interschimbabili la runtime.</li>
+                        <li><strong>Unde se folosește:</strong>Cand e nevoie de algoritmi care au implementari diferite.</li>
+                        <li><strong>Cheie:</strong> Evită evita if-else sau switch folosind strategia ca parametru.</li>
+                    </ul>
+
+                    <h4 style="margin-top: 1rem;">📌 Observer</h4>
+                    <ul>
+                        <li><strong>Ce face:</strong> Defineste un mecanism de abonare (Publish/Subscribe) pentru a notifica automat mai multe obiecte cand are loc un eveniment.</li>
+                        <li><strong>Unde se folosește:</strong> Event Listeners în UI (click events), sisteme de notificare (push notifications, newsletter), arhitecturi Event-Driven.</li>
+                        <li><strong>Cheie:</strong> Subiectul menține o listă de subscribers si ii parcurge cu o bucla cand trimite notificarea.</li>
+                    </ul>
+                </div>
             </div>
 
             <div class="resources-box">
